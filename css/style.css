@@ -1,0 +1,115 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.body{
+    counter-reset: section;
+}
+
+section {
+    counter-increment: section;
+}
+
+section::before {
+    content: "Task " counter(section) ":";
+    display: block;
+    text-align: center;
+    font-weight: 700;
+    padding-bottom: 15px;
+}
+
+.container{
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+/*MODIFIERS THEME*/
+.theme{
+    padding: 15px 0;
+}
+.theme:nth-child(odd){
+    background-color: aqua;
+}
+
+.box-theme{
+    background-color: black;
+    width: 100px;
+    height: 100px;
+}
+
+.button-theme{
+    background-color: #27ae60;
+    border-color: rgb(127, 214, 95);
+    width: 100px;
+    /*height: 20px;*/
+}
+
+.flex-row{
+    display: flex;
+    justify-content: space-around;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+/*TASK 1*/
+.t1-content{
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+}
+
+/*TASK 3*/
+.t3-btn{
+    display: block;
+    margin: 0 auto;
+}
+
+/*TASK 4*/
+.t4__inner{
+    margin: 0 auto;
+    flex-direction: column;
+    width: 400px;
+}
+
+.t4_label{
+    text-align: center;
+}
+
+/*TASK 5*/
+.t5_box{
+    background-color: yellow;
+}
+
+/*TASK 6*/
+
+
+.t6_box{
+    background-color: red;
+    width: 50px;
+    height: 50px;
+}
+
+/*TASK 7*/
+
+
+.t7_box{
+    background-color: green;
+    width: 50px;
+    height: 20px;
+}
+
+.t7_text-box{
+    width: 200px;
+}
+
+/*TASK 8*/
