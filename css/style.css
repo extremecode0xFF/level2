@@ -112,4 +112,102 @@ section::before {
     width: 200px;
 }
 
-/*TASK 8*/
+/*TASK 9*/
+.t9_text-area{
+    width: 300px;
+    height: 100px;
+}
+
+/*TASK 10*/
+
+.t10:before{
+    content: "Task " "10-12" ":";
+    counter-increment: section+2;
+}
+
+.t10{
+    position: fixed;
+    text-align: center;
+    top: 0;
+    right: 0;
+    background-color: rgba(149, 149, 149, .5);
+    border-radius: 5px;
+}
+
+/*TASK 13*/
+.t13{
+    padding: 15px 0;
+}
+
+.t13_area{
+    width: 200px;
+    min-height: 25px;
+    background-color: rgba(140, 177, 77,.5);
+    border: 1px solid green;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.t13_label{
+    text-align: center;
+}
+
+/*TASK 14*/
+.t14{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(149, 149, 149, .5);
+}
+
+/*TASK 15*/
+.t15_outbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    background-color: red;
+}
+
+.t15_inbox{
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+
+}
+
+/*TASK 16*/
+.t16_grey-box{
+    display: none;
+    position: fixed;
+    background-color: rgba(144,144,144,.5);
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*TASK 18*/
+.t18_form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(209, 222, 106, .5);
+    border: 3px dashed green;
+    border-radius: 3px;
+    width: 200px;
+    height: 100px;
+}
+
+.highlight {
+    border: 3px solid green;
+}
+
+.t18_label{
+
+}
+
+
+

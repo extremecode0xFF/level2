@@ -89,8 +89,8 @@ function eventYellowBox() {
 
 //TASK 6
 let button = document.getElementById("t6_button")
-button.addEventListener("mouseout",toggleRedBox)
-button.addEventListener("mouseover",toggleRedBox)
+button.addEventListener("mouseout", toggleRedBox)
+button.addEventListener("mouseover", toggleRedBox)
 
 function toggleRedBox() {
     let box = document.getElementById("t6_box")
@@ -100,18 +100,176 @@ function toggleRedBox() {
 //TASK 7
 let textBox = document.getElementById("t7_text-box");
 let box = document.getElementById("t7_box")
-textBox.addEventListener("focusin", ()=> box.classList.remove("hidden"))
-textBox.addEventListener("focusout", ()=> box.classList.add("hidden"))
-textBox.addEventListener("keypress", ()=> box.classList.add("hidden"))
+textBox.addEventListener("focusin", () => box.classList.remove("hidden"))
+textBox.addEventListener("focusout", () => box.classList.add("hidden"))
+textBox.addEventListener("keypress", () => box.classList.add("hidden"))
 
 //TASK 8
 document.getElementById("t8_button").onclick = showImage;
 
 function showImage() {
     let getLink = document.getElementById("t8_text-box").value;
-    if(!getLink) return;
+    if (!getLink) return;
     let image = document.getElementById("t8_image")
     image.setAttribute("src", getLink)
 }
 
+//TASK 9
+document.getElementById("t9_button").onclick = showImages;
 
+function showImages() {
+    let linksArray = document.getElementById("t9_text-area").value.split("\n");
+    let images = document.getElementById("t9_images")
+
+    function containImg(link) {
+        for (let image of images.getElementsByTagName("img")) {
+            if (image.src === link) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    for (let i = 0; i < linksArray.length; i++) {
+        let link = linksArray[i];
+        if (!containImg(link)) {
+            let image = document.createElement("img")
+            image.src = link;
+            images.appendChild(image)
+        }
+    }
+}
+
+//TASK 10
+document.onmousemove = (e) => {
+    document.getElementById("t10_coord").innerHTML =
+        "X: " + e.clientX +
+        " Y: " + e.clientY
+}
+
+//TASK 11
+document.getElementById("t11_lang").innerText = `lang: ${document.documentElement.lang}`
+
+//TASK 12
+navigator.geolocation.getCurrentPosition((pos)=>{
+    let latitude = pos.coords.latitude;
+    let longitude = pos.coords.longitude;
+    document.getElementById("t12_nav").innerText = `latitude: ${latitude} 
+    longitude ${longitude}`
+})
+
+
+//TASK 13
+window.addEventListener("load",loadData)
+window.addEventListener("unload", saveData)
+
+function loadData() {
+    document.getElementById("t13_content1").innerHTML = localStorage.getItem("content1")
+    document.getElementById("t13_content3").innerHTML = sessionStorage.getItem("content3")
+    document.getElementById("t13_content2").innerHTML = getCookie("content2")
+
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+}
+
+function saveData() {
+    localStorage.setItem("content1", document.getElementById("t13_content1").innerHTML);
+    sessionStorage.setItem("content3", document.getElementById("t13_content3").innerHTML)
+    document.cookie = encodeURIComponent("content2") + '=' + encodeURIComponent(document.getElementById("t13_content2").innerHTML);
+}
+
+//TASK 14
+document.getElementById("t14_button").onclick = moveToTop;
+window.onscroll = view;
+
+function view(){
+    let blockUP = document.getElementById("t14");
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        blockUP.classList.remove("hidden");
+    }else{
+        blockUP.classList.add("hidden");
+    }
+}
+
+function moveToTop() {
+    window.scrollTo({top: 0,behavior:"smooth"})
+}
+
+//TASK 15
+
+document.getElementById("t15_outbox").addEventListener("click", alertRedBox);
+document.getElementById("t15_inbox").addEventListener("click", alertBlueBox);
+
+function alertRedBox(){
+    alert("Red Box")
+}
+function alertBlueBox(){
+    alert("Blue Box")
+    event.stopPropagation();
+}
+
+//TASK 16
+document.getElementById("t16_button").onclick = disableScroll;
+document.getElementById("t16_grey-box").onclick = activeScroll;
+function disableScroll() {
+    document.body.style.overflow = "hidden";
+    document.getElementById("t16_grey-box").style.display = "block";
+}
+
+function activeScroll(){
+    document.body.style.overflow = "";
+    document.getElementById("t16_grey-box").style.display = "none";
+}
+//TASK 17
+document.getElementById("t17_submit").onclick = disableSubmit;
+
+function disableSubmit(){
+    document.getElementById("t17_form")
+        .setAttribute("onsubmit", "return false");
+}
+
+//TASK 18
+document.getElementById("t18_button").onclick = ()=>{document.getElementById("t18_file").click()}
+let dropArea = document.getElementById("t18_form");
+
+dropArea.addEventListener('dragenter', preventDefaults, false)
+dropArea.addEventListener('dragleave', preventDefaults, false)
+dropArea.addEventListener('dragover', preventDefaults, false)
+dropArea.addEventListener('drop', preventDefaults, false)
+
+function preventDefaults (e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false)
+});
+['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false)
+});
+
+function highlight(e) {
+    dropArea.classList.add('highlight')
+}
+function unhighlight(e) {
+    dropArea.classList.remove('highlight')
+}
+
+dropArea.addEventListener('drop', handleDrop, false)
+let labelText = document.getElementById("t18_label");
+
+function handleDrop(e) {
+    let dt = e.dataTransfer
+    let file = dt.files.item(0).name
+    console.log(file)
+    labelText.innerHTML = file;
+}
+
+document.getElementById("t18_file").onchange = function() {
+    document.getElementById("t18_label").innerHTML = this.files[0].name;
+}
