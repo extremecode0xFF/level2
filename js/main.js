@@ -151,7 +151,7 @@ document.onmousemove = (e) => {
 document.getElementById("t11_lang").innerText = `lang: ${document.documentElement.lang}`
 
 //TASK 12
-navigator.geolocation.getCurrentPosition((pos)=>{
+navigator.geolocation.getCurrentPosition((pos) => {
     let latitude = pos.coords.latitude;
     let longitude = pos.coords.longitude;
     document.getElementById("t12_nav").innerText = `latitude: ${latitude} 
@@ -160,7 +160,7 @@ navigator.geolocation.getCurrentPosition((pos)=>{
 
 
 //TASK 13
-window.addEventListener("load",loadData)
+window.addEventListener("load", loadData)
 window.addEventListener("unload", saveData)
 
 function loadData() {
@@ -186,17 +186,17 @@ function saveData() {
 document.getElementById("t14_button").onclick = moveToTop;
 window.onscroll = view;
 
-function view(){
+function view() {
     let blockUP = document.getElementById("t14");
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         blockUP.classList.remove("hidden");
-    }else{
+    } else {
         blockUP.classList.add("hidden");
     }
 }
 
 function moveToTop() {
-    window.scrollTo({top: 0,behavior:"smooth"})
+    window.scrollTo({top: 0, behavior: "smooth"})
 }
 
 //TASK 15
@@ -204,10 +204,11 @@ function moveToTop() {
 document.getElementById("t15_outbox").addEventListener("click", alertRedBox);
 document.getElementById("t15_inbox").addEventListener("click", alertBlueBox);
 
-function alertRedBox(){
+function alertRedBox() {
     alert("Red Box")
 }
-function alertBlueBox(){
+
+function alertBlueBox() {
     alert("Blue Box")
     event.stopPropagation();
 }
@@ -215,25 +216,29 @@ function alertBlueBox(){
 //TASK 16
 document.getElementById("t16_button").onclick = disableScroll;
 document.getElementById("t16_grey-box").onclick = activeScroll;
+
 function disableScroll() {
     document.body.style.overflow = "hidden";
     document.getElementById("t16_grey-box").style.display = "block";
 }
 
-function activeScroll(){
+function activeScroll() {
     document.body.style.overflow = "";
     document.getElementById("t16_grey-box").style.display = "none";
 }
+
 //TASK 17
 document.getElementById("t17_submit").onclick = disableSubmit;
 
-function disableSubmit(){
+function disableSubmit() {
     document.getElementById("t17_form")
         .setAttribute("onsubmit", "return false");
 }
 
 //TASK 18
-document.getElementById("t18_button").onclick = ()=>{document.getElementById("t18_file").click()}
+document.getElementById("t18_button").onclick = () => {
+    document.getElementById("t18_file").click()
+}
 let dropArea = document.getElementById("t18_form");
 
 dropArea.addEventListener('dragenter', preventDefaults, false)
@@ -241,7 +246,7 @@ dropArea.addEventListener('dragleave', preventDefaults, false)
 dropArea.addEventListener('dragover', preventDefaults, false)
 dropArea.addEventListener('drop', preventDefaults, false)
 
-function preventDefaults (e) {
+function preventDefaults(e) {
     e.preventDefault();
     e.stopPropagation();
 }
@@ -256,6 +261,7 @@ function preventDefaults (e) {
 function highlight(e) {
     dropArea.classList.add('highlight')
 }
+
 function unhighlight(e) {
     dropArea.classList.remove('highlight')
 }
@@ -270,6 +276,64 @@ function handleDrop(e) {
     labelText.innerHTML = file;
 }
 
-document.getElementById("t18_file").onchange = function() {
+document.getElementById("t18_file").onchange = function () {
     document.getElementById("t18_label").innerHTML = this.files[0].name;
 }
+
+//CSV PARSER
+let sCSV = `10,20,Кропивницкий,200000
+10,60,Харьков,500000
+7,40,Львов,300000
+#fdsfsdfsdf
+
+12,80,Одесса,600000
+9,80,Тернополь,100000
+6,80,Франковск,700000
+9,50,Чернвоцы,100000
+10,80,Ужгород,100000
+9,80,Луцк,800000
+7,80,Хмельницк,100000
+16,90,Винница,2900000
+8,80,Суммы,50000
+10,10,Киев,4000000
+12,7,Луцк,5000000
+16,32,Ивано-Франковск,1000000`
+
+function parseCSV(sCSV) {
+    let cities = sCSV.split("\n")
+        .filter(line => {
+            if (line) {
+                if (!line.startsWith("#"))
+                    return true
+            }
+        })
+        .map((line) => {
+            let data = line.split(",");
+            return {x: data[0], y: data[1], name: data[2], population: data[3]}
+        })
+        .sort((a,b)=> a.population - b.population )
+        .reverse()
+        .slice(0,10)
+        .reduce((a,b,c)=>{
+            a[b.name] = {population: b.population, rating: c+1};
+            return a;
+        },{})
+
+    return (text) => {
+        let word = text.split(" ");
+        word.filter(value => {
+            if(cities[value]){
+                let additionalText = value + "(" + cities[value].rating +
+                    " место в ТОП-10 самых крупных городов Украины, население " +
+                    cities[value].population + " человек)";
+                text = text.replace(value, additionalText);
+                return true;
+            }
+        })
+        return text;
+    }
+}
+
+let parsed = parseCSV(sCSV);
+
+console.log(parsed("Наиболее удовлетворены жизнью в своем городе в целом винничане — Винница лидирует с небольшим отрывом от всех остальных, набрав 3,4 балла из возможных 5. На втором месте — Луцк , на третьем Ивано-Франковск"));
